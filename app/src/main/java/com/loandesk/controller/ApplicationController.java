@@ -41,4 +41,15 @@ public class ApplicationController {
     public List<LoanApplication> list() {
         return repository.findAll();
     }
+
+    @PatchMapping("/{id}/status")
+    @Operation(summary = "Update application status")
+    public ResponseEntity<LoanApplication> updateStatus(@PathVariable Long id, @RequestBody LoanApplication payload) {
+        return repository.findById(id)
+                .map(existing -> {
+                    existing.setStatus(payload.getStatus());
+                    return ResponseEntity.ok(repository.save(existing));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
