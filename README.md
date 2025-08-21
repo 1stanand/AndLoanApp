@@ -1,11 +1,23 @@
 # LoanDesk
 
+
 LoanDesk is a server-rendered Spring Boot MVC application for loan origination and disbursal.
+
 
 ## Prerequisites
 
 - Java 21
 - Maven 3.9+
+
+## Running
+
+```bash
+cd app
+mvn -q exec:java
+```
+
+The program prompts for a username and password and echoes them back in plain text.
+
 - PostgreSQL
 
 ## Database Setup
@@ -27,3 +39,4 @@ The application will be available at `http://localhost:8080`.
 - **checker / password** (role `CHECKER`)
 
 Uploaded files are stored under `./data/kyc` relative to the project root.
+
