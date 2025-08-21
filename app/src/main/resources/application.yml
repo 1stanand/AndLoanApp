@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: dev
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+loandesk:
+  storage-path: ./data/kyc
