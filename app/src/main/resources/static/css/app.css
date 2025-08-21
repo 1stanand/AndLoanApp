@@ -1,0 +1,19 @@
+body {
+    background-color: #1e1e2f;
+    color: #e0e0e0;
+}
+.card {
+    background-color: #2d2d44;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+}
+.navbar-brand {
+    color: #20c997 !important;
+}
+a, .btn-link {
+    color: #20c997;
+}
+a:hover {
+    color: #17a589;
+}
