@@ -6,6 +6,7 @@ import com.loandesk.domain.LoanProduct;
 import com.loandesk.repository.CustomerRepository;
 import com.loandesk.repository.LoanApplicationRepository;
 import com.loandesk.repository.LoanProductRepository;
+import com.loandesk.service.LoanCalculatorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +18,16 @@ public class LoanApplicationViewController {
     private final LoanApplicationRepository applicationRepository;
     private final CustomerRepository customerRepository;
     private final LoanProductRepository productRepository;
+    private final LoanCalculatorService calculator;
 
     public LoanApplicationViewController(LoanApplicationRepository applicationRepository,
                                          CustomerRepository customerRepository,
-                                         LoanProductRepository productRepository) {
+                                         LoanProductRepository productRepository,
+                                         LoanCalculatorService calculator) {
         this.applicationRepository = applicationRepository;
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
+        this.calculator = calculator;
     }
 
     @GetMapping
@@ -49,6 +53,17 @@ public class LoanApplicationViewController {
         app.setStatus("DRAFT");
         applicationRepository.save(app);
         return "redirect:/applications";
+    }
+
+    @GetMapping("/{id}/schedule")
+    public String schedule(@PathVariable Long id, Model model) {
+        LoanApplication app = applicationRepository.findById(id).orElseThrow();
+        model.addAttribute("app", app);
+        model.addAttribute("schedule", calculator.generateSchedule(
+                app.getAmount(),
+                app.getProduct().getInterestRateAnnual(),
+                app.getTermMonths()));
+        return "schedule";
     }
 
     @PostMapping("/{id}/approve")
