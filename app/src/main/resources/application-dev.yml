@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: loandesk
+  datasource:
+    url: jdbc:h2:mem:loandesk;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  thymeleaf:
+    cache: false
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+loandesk:
+  storage-path: ./data/kyc
