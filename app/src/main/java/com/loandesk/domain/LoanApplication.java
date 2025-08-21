@@ -27,4 +27,15 @@ public class LoanApplication {
     private int termMonths;
     private String status;
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Transient
+    public double getMonthlyPayment() {
+        double annualRate = product.getInterestRateAnnual();
+        double monthlyRate = annualRate / 12.0 / 100.0;
+        if (monthlyRate == 0) {
+            return amount / termMonths;
+        }
+        double factor = Math.pow(1 + monthlyRate, termMonths);
+        return amount * (monthlyRate * factor) / (factor - 1);
+    }
 }

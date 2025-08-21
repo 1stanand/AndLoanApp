@@ -2,6 +2,8 @@ package com.loandesk.controller;
 
 import com.loandesk.domain.LoanApplication;
 import com.loandesk.repository.LoanApplicationRepository;
+import com.loandesk.service.LoanCalculatorService;
+import com.loandesk.service.dto.PaymentScheduleEntry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -16,9 +18,11 @@ import java.util.List;
 public class ApplicationController {
 
     private final LoanApplicationRepository repository;
+    private final LoanCalculatorService calculator;
 
-    public ApplicationController(LoanApplicationRepository repository) {
+    public ApplicationController(LoanApplicationRepository repository, LoanCalculatorService calculator) {
         this.repository = repository;
+        this.calculator = calculator;
     }
 
     @PostMapping
@@ -50,6 +54,17 @@ public class ApplicationController {
                     existing.setStatus(payload.getStatus());
                     return ResponseEntity.ok(repository.save(existing));
                 })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/schedule")
+    @Operation(summary = "Get amortization schedule")
+    public ResponseEntity<List<PaymentScheduleEntry>> schedule(@PathVariable Long id) {
+        return repository.findById(id)
+                .map(app -> ResponseEntity.ok(calculator.generateSchedule(
+                        app.getAmount(),
+                        app.getProduct().getInterestRateAnnual(),
+                        app.getTermMonths())))
                 .orElse(ResponseEntity.notFound().build());
     }
 }
