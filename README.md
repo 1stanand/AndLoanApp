@@ -10,7 +10,7 @@ A minimal dark-themed loan origination & disbursal practice app built with Sprin
 ## Database
 Create a database named `loandesk` and update credentials in `app/src/main/resources/application.yml` if needed.
 
-The schema is managed via Flyway. On first run, migrations will create tables and seed users/products. Passwords are stored as **plain text** for local practice only.
+The schema is managed via Flyway. On first run, migrations will create tables and seed users, products and a sample application. Passwords are stored as **plain text** for local practice only.
 
 ## Running
 ```
